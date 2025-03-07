@@ -3,6 +3,9 @@ import {  CronJob, CronTime  }  from 'cron' ;
 type Crontime = string | Date;
 type Ontick =()=> void;
 
+
+// se usa patron adaptador para envolver dependencias de tercero , cron en este caso 
+
 export class CronService {
 
     static createJob(cronTime:Crontime,ontick:Ontick){

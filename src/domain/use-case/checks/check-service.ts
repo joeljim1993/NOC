@@ -26,11 +26,16 @@ export class CheckService implements CheckServiceUseCase {
         try {
  
             const req = await fetch( url );
+            
             if(!req.ok){
                 throw new Error(`Error on check service ${ url }`)
             }
 
-            const log =new LogEntities(`Service ${ url } working`,LogSeverityLevel.low);
+            const log =new LogEntities({
+                message:`Service ${ url } working`,
+                level:LogSeverityLevel.low,
+                origin:'CheckService',
+            });
             this.logRepository.saveLog( log);
 
             this.successCallback && this.successCallback();
@@ -40,7 +45,11 @@ export class CheckService implements CheckServiceUseCase {
         } catch (error) {
 
             const errorMessage =`${error}`;
-            const log =new LogEntities( errorMessage,LogSeverityLevel.high);
+            const log =new LogEntities({
+                message:`Service ${ url } not working`,
+                level:LogSeverityLevel.high,
+                origin:'CheckService',
+            });
             this.logRepository.saveLog(log);
 
             this.errorCallback && this.errorCallback(errorMessage);

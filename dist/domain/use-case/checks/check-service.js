@@ -25,14 +25,22 @@ class CheckService {
                 if (!req.ok) {
                     throw new Error(`Error on check service ${url}`);
                 }
-                const log = new log_entities_1.LogEntities(`Service ${url} working`, log_entities_1.LogSeverityLevel.low);
+                const log = new log_entities_1.LogEntities({
+                    message: `Service ${url} working`,
+                    level: log_entities_1.LogSeverityLevel.low,
+                    origin: 'CheckService',
+                });
                 this.logRepository.saveLog(log);
                 this.successCallback && this.successCallback();
                 console.log(`${url} esta funcionando `);
             }
             catch (error) {
                 const errorMessage = `${error}`;
-                const log = new log_entities_1.LogEntities(errorMessage, log_entities_1.LogSeverityLevel.high);
+                const log = new log_entities_1.LogEntities({
+                    message: `Service ${url} not working`,
+                    level: log_entities_1.LogSeverityLevel.high,
+                    origin: 'CheckService',
+                });
                 this.logRepository.saveLog(log);
                 this.errorCallback && this.errorCallback(errorMessage);
                 return false;

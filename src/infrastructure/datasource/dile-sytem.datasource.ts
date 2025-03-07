@@ -1,4 +1,4 @@
-import path from "path";
+
 import { Logdatasource } from "../../domain/datasource/log.datasource";
 import { LogEntities, LogSeverityLevel } from '../../domain/entities/log.entities';
 var fs = require('fs');

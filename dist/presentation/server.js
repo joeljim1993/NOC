@@ -11,6 +11,7 @@ new dile_sytem_datasource_1.FileSystemDatasource());
 class Server {
     static start() {
         console.log('server started...');
+        // aqui enviaremos los email
         cron_service_1.CronService.createJob('*/5 * * * * *', () => {
             const url = 'https://google.com';
             // new CheckService().execute('https://google.com');
