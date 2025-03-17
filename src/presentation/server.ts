@@ -4,11 +4,14 @@ import { LogRepositoryImpl } from "../infrastructure/repositories/log.repository
 import { FileSystemDatasource } from "../infrastructure/datasource/dile-sytem.datasource";
 import { Emailservice } from "./email/email.service";
 import { SendEmailLogs } from "../domain/use-case/email/email/sent-logs";
+import { PostgresLogDatasource } from "../infrastructure/datasource/postgres-log.datasource";
 
 
-const fileSystemLogRepository = new LogRepositoryImpl(
+const logRepository = new LogRepositoryImpl(
 	// en esta parte luego podemos cambiar el datasource por postgres o mongo ...
-	new FileSystemDatasource()
+	// new FileSystemDatasource(),
+	// new MongoLogDataSource(),
+	new PostgresLogDatasource()
 );
 const emailService = new Emailservice();
 
@@ -17,32 +20,30 @@ export class Server {
     public static start(){
         console.log('server started...');
 		
-		// aqui enviaremos los email
-		new SendEmailLogs(
-			emailService,
-			fileSystemLogRepository
-		).execute([
-			// 'joel_jimenez@live.com',
-			// 'jj284019@gmail.com',
-			// 'jj22233284019@gmail.com'
+		// !aqui enviaremos los email
+		// new SendEmailLogs(
+		// 	emailService,
+		// 	fileSystemLogRepository
+		// ).execute([
+		// 	// 'joel_jimenez@live.com',
+		// 		'joeljim2293@gmail.com'
 
-		])
+		// ])
 
+		// !ejecute cronservice para consultar un url y guardar en log con file system
 
-        // CronService.createJob(
-		// 	'*/5 * * * * *',
-		// 	()=>{
-		// 		const url = 'https://google.com'
-		// 		// new CheckService().execute('https://google.com');
-		// 		new CheckService(
-		// 			fileSystemLogRepository,
-		// 			()=> console.log(` ${ url } is ok `),
-		// 			(error)=> console.log(error )
-					
-					
-		// 		).execute(url );
+        CronService.createJob(
+			'*/5 * * * * *',
+			()=>{
+				const url = 'https://google.com'
+		
+				new CheckService(
+					logRepository,
+					()=> console.log(` ${ url } is ok `),
+					(error)=> console.log(error )
+				).execute(url );
 
-		// 	}
-		// );
+			}
+		);
     } 
 }

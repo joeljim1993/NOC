@@ -1,4 +1,7 @@
 
+
+// ? reglas de negocio para nuestro logs
+
 export enum LogSeverityLevel {
     low ='low',
     medium = 'medium',
@@ -42,7 +45,21 @@ export class LogEntities {
             createdAt:createAt,
             origin:origin
         });
-     
+        
+        console.log("log entidad", log);
+        
+
+        return log;
+
+    }
+
+    static fromObject=( object :{[key:string]:any}):LogEntities=>{
+
+        const { message,level,createdAt,origin}  = object;
+
+        const log = new LogEntities({
+            message,level,createdAt,origin
+        })
 
         return log;
 
